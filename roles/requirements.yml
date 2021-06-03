@@ -1,0 +1,3 @@
+- src: https://github.com/nleiva/rhpds-create-aws-sandbox
+  version: main
+  name: rhpds

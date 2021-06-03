@@ -1,0 +1,5 @@
+ - name: Create an RHPDS Sandbox
+   hosts: localhost
+
+   roles:
+       - {role: rhpds, when: cfme_url is defined}
