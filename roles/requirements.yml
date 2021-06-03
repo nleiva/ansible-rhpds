@@ -1,3 +1,4 @@
 - src: git@github.com:nleiva/rhpds-create-aws-sandbox.git
+  scm: git
   version: main
   name: rhpds
