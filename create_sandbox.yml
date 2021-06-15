@@ -1,3 +1,6 @@
+ # ansible-galaxy collection install redhat_cop.tower_configuration
+ # ansible-galaxy role install -r roles/requirements.yml
+ # ansible-playbook create_sandbox.yml --extra-vars "cfme_password= cfme_username= cfme_url="  -v
  - name: Create an RHPDS Sandbox
    hosts: localhost
 
