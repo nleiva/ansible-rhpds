@@ -21,4 +21,20 @@
        - { role: rhpds, when: cfme_url is defined }
        - { role: check_credentials, when: aws_access_key is defined }
        - { role: credentials, when: tower_credentials is defined }
-       - { role: check_credentials, when: tower_credentials is defined }
+
+   tasks:
+    - name: Add AWS RHPDS Credential to Tower
+      tower_credential:
+        name: "{{ credential_name }}"
+        description: RHPDS AWS Token
+        organization: "{{ tower_org }}"
+        credential_type: Amazon Web Services
+        inputs:
+          access_key: "{{ aws_access_key | default('access') }}"
+          secret_key: "{{ aws_access_secret | default('secret') }}"
+        #update_secrets: true
+        #state:  present
+        #tower_username: "{{ tower_username | default(omit, true) }}"
+        #tower_password: "{{ tower_password | default(omit, true) }}"
+        tower_oauthtoken: "{{ tower_oauthtoken | default(omit, true) }}"
+        tower_host: "{{ tower_hostname }}"
