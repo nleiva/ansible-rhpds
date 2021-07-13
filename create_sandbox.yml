@@ -3,11 +3,21 @@
  # ansible-playbook create_sandbox.yml --extra-vars "cfme_password= cfme_username= cfme_url="  -v
  - name: Create an RHPDS Sandbox
    hosts: localhost
+   vars:
+     - tower_hostname: "{{ lookup('env', 'TOWER_HOST') }}"
+     - tower_oauthtoken: "{{ lookup('env', 'TOWER_OAUTHTOKEN') }}"
+   collections:
+     - ansible.tower
+     #- awx.awx
+     - redhat_cop.tower_configuration
 
    pre_tasks:
-     - name: Include vars
+     - name: Include vars from vars directory
        include_vars:
-         file: "{{ ansible_env.HOME }}/.creds/rhpds.yml"
+         file: ./vars/base.yml
 
    roles:
-       - {role: rhpds, when: cfme_url is defined}
+       - { role: check_vars }
+       - { role: rhpds, when: cfme_url is defined }
+       - { role: check_credentials, when: aws_access_key is defined }
+       - { role: credentials, when: tower_credentials is defined }

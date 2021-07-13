@@ -1,0 +1,8 @@
+tower_credentials:
+  - credential_type: Amazon Web Services
+    name: "{{ credential_name }}"
+    description: RHPDS AWS Token
+    inputs:
+      access_key: "{{ aws_access_key | default('access') }}"
+      secret_key: "{{ aws_access_secret | default('secret') }}"
+    organization: "{{ tower_org }}"
