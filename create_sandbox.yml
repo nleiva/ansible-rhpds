@@ -21,3 +21,4 @@
        - { role: rhpds, when: cfme_url is defined }
        - { role: check_credentials, when: aws_access_key is defined }
        - { role: credentials, when: tower_credentials is defined }
+       - { role: check_credentials, when: tower_credentials is defined }
