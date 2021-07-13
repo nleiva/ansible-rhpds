@@ -30,8 +30,8 @@
         organization: "{{ tower_org }}"
         credential_type: Amazon Web Services
         inputs:
-          access_key: "{{ aws_access_key | default('access') }}"
-          secret_key: "{{ aws_access_secret | default('secret') }}"
+          username: "{{ aws_access_key | default('access') }}"
+          password: "{{ aws_access_secret | default('secret') }}"
         #update_secrets: true
         #state:  present
         #tower_username: "{{ tower_username | default(omit, true) }}"
