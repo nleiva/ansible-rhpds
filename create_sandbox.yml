@@ -1,40 +1,31 @@
- # ansible-galaxy collection install redhat_cop.tower_configuration
- # ansible-galaxy role install -r roles/requirements.yml
- # ansible-playbook create_sandbox.yml --extra-vars "cfme_password= cfme_username= cfme_url="  -v
- - name: Create an RHPDS Sandbox
-   hosts: localhost
-   vars:
-     - tower_hostname: "{{ lookup('env', 'TOWER_HOST') }}"
-     - tower_oauthtoken: "{{ lookup('env', 'TOWER_OAUTHTOKEN') }}"
-   collections:
-     - ansible.tower
-     #- awx.awx
-     - redhat_cop.tower_configuration
+- name: Create an RHPDS Sandbox
+  hosts: localhost
+  vars:
+    - tower_hostname: "{{ lookup('env', 'TOWER_HOST') }}"
+    - tower_oauthtoken: "{{ lookup('env', 'TOWER_OAUTHTOKEN') }}"
+  collections:
+    - ansible.tower
+    #- awx.awx
+    - redhat_cop.tower_configuration
 
-   pre_tasks:
-     - name: Include vars from vars directory
-       include_vars:
-         file: ./vars/base.yml
+  pre_tasks:
+    - name: Include vars from vars directory
+      include_vars:
+        file: ./vars/base.yml
 
-   roles:
-       - { role: check_vars }
-       - { role: rhpds, when: cfme_url is defined }
-       - { role: check_credentials, when: aws_access_key is defined }
-       - { role: credentials, when: tower_credentials is defined }
+  roles:
+      - { role: check_vars }
+      - { role: rhpds, when: cfme_url is defined }
 
-   tasks:
-    - name: Add AWS RHPDS Credential to Tower
-      tower_credential:
-        name: "{{ credential_name }}"
-        description: RHPDS AWS Token
-        organization: "{{ tower_org }}"
-        credential_type: Amazon Web Services
-        inputs:
-          username: "{{ aws_access_key | default('access') }}"
-          password: "{{ aws_access_secret | default('secret') }}"
-        #update_secrets: true
-        #state:  present
-        #tower_username: "{{ tower_username | default(omit, true) }}"
-        #tower_password: "{{ tower_password | default(omit, true) }}"
-        tower_oauthtoken: "{{ tower_oauthtoken | default(omit, true) }}"
-        tower_host: "{{ tower_hostname }}"
+  tasks:
+  - name: Add AWS RHPDS Credential to Tower
+    tower_credential:
+      name: "{{ credential_name }}"
+      description: RHPDS AWS Token
+      organization: "{{ tower_org }}"
+      credential_type: Amazon Web Services
+      inputs:
+        username: "{{ aws_access_key | default('access') }}"
+        password: "{{ aws_access_secret | default('secret') }}"
+      tower_oauthtoken: "{{ tower_oauthtoken | default(omit, true) }}"
+      tower_host: "{{ tower_hostname }}"
