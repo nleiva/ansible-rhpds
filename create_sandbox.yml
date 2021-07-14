@@ -29,3 +29,4 @@
         password: "{{ aws_access_secret | default('secret') }}"
       tower_oauthtoken: "{{ tower_oauthtoken | default(omit, true) }}"
       tower_host: "{{ tower_hostname }}"
+    when: update_credentials

@@ -27,4 +27,8 @@ It will create a Custom Credential for Ansible Tower to store all the [inputs to
 
 ### create_sandbox.yml
 
-It creates a Sandbox and updates the credentials in Tower.
+It creates a RHPDS AWS Sandbox and updates its credentials in Tower. If you don't provide the custom credential as input, you can pass the variables as extra-vars.
+
+```bash
+ansible-playbook create_sandbox.yml --extra-vars "cfme_password='' cfme_username='' cfme_url='' service_catalog_id='' service_template_id=''"  -v
+```
