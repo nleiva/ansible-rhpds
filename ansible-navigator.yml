@@ -1,0 +1,28 @@
+---
+ansible-navigator:
+  ansible:
+    config: ansible.cfg
+    inventories:
+    - ./hosts
+
+  editor:
+    command: code -g {filename}:{line_number}
+    console: false
+
+  logging:
+    level: warning
+
+  execution-environment:
+    container-engine: podman
+    enabled: true
+    pull-policy: missing
+    image: quay.io/nleiva/ee-controller-image
+    environment-variables:
+      pass:
+        - CONTROLLER_HOST
+        - CONTROLLER_OAUTHTOKEN
+
+  playbook-artifact:
+    enable: False
+
+  mode: stdout
