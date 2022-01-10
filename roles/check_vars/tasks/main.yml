@@ -1,0 +1,24 @@
+- name: Check cfme_username is defined as an environment variable
+  ansible.builtin.fail:
+    msg: "cfme_username is not defined"
+  when: cfme_username is not defined
+
+- name: Check cfme_password is defined as an environment variable
+  ansible.builtin.fail:
+    msg: "cfme_password is not defined"
+  when: cfme_password is not defined
+
+- name: Check cfme_url is defined as an environment variable
+  ansible.builtin.fail:
+    msg: "cfme_url is not defined. Example: https://rhpds.redhat.com"
+  when: cfme_url is not defined
+
+- name: Check service_catalog_id is defined as an environment variable
+  ansible.builtin.fail:
+    msg: "service_catalog_id is not defined"
+  when: service_catalog_id is not defined
+
+- name: Check service_template_id is defined as an environment variable
+  ansible.builtin.fail:
+    msg: "service_template_id is not defined"
+  when: service_template_id is not defined
