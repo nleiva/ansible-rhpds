@@ -9,8 +9,8 @@
 
   pre_tasks:
     - name: Include vars from vars directory
-      include_vars:
-        file: ./vars/base.yml
+      ansible.builtin.include_vars:
+        file: "{{ playbook_dir }}/vars/base.yml"
 
   roles:
       - { role: check_vars }

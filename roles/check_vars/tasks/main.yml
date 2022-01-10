@@ -1,3 +1,15 @@
+- name: Check CONTROLLER_HOST is defined as an environment variable
+  ansible.builtin.fail:
+    msg: "CONTROLLER_HOST is not defined"
+  when: CONTROLLER_HOST is not defined
+  ignore_errors: true
+
+- name: Check CONTROLLER_OAUTHTOKEN is defined as an environment variable
+  ansible.builtin.fail:
+    msg: "CONTROLLER_OAUTHTOKEN is not defined"
+  when: CONTROLLER_OAUTHTOKEN is not defined
+  ignore_errors: true
+
 - name: Check cfme_username is defined as an environment variable
   ansible.builtin.fail:
     msg: "cfme_username is not defined"
