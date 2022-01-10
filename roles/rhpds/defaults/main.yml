@@ -1,0 +1,10 @@
+---
+# defaults file for rhpds-create-aws-sandbox
+cfme_username: user
+cfme_password: pass
+cfme_url: https://rhpds.redhat.com
+service_catalog_id: 1
+service_template_id: 1
+
+allow_duplicate_sandboxes: false
+aws_sandbox_usage: "Training - Ad-hoc or exploratory"

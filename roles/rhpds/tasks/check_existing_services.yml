@@ -1,0 +1,106 @@
+---
+- name: Check running service
+  ansible.builtin.uri:
+    url: "{{ item.href }}"
+    user: "{{ cfme_username }}"
+    password: "{{ cfme_password }}"
+    method: GET
+    force_basic_auth: yes
+    status_code: 200
+    body_format: json
+  register: current_item
+
+- name: Show Service
+  ansible.builtin.debug:
+    var: current_item
+
+- name: Set fact if an AWS sandbox already exists
+  ansible.builtin.set_fact:
+    aws_sandbox_exists: True
+  when: current_item.json.description == "AWS Blank Open Environment"
+
+- name: Get FULL Custom Attributes
+  ansible.builtin.uri:
+    url: "{{ item.href }}?attributes=custom_attributes"
+    user: "{{ cfme_username }}"
+    password: "{{ cfme_password }}"
+    method: GET
+    force_basic_auth: yes
+    status_code: 200
+    body_format: json
+  register: full_attributes
+  when: current_item.json.description == "AWS Blank Open Environment"
+
+- name: Search AWS ACCESS KEY
+  ansible.builtin.set_fact:
+    aws_access_key_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+  vars:
+    _query: "[?name ==`AWS_ACCESS_KEY_ID`].value"
+  no_log: true
+
+- name: Search AWS SECRET KEY
+  ansible.builtin.set_fact:
+    aws_access_secret_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+  vars:
+    _query: "[?name ==`AWS_SECRET_ACCESS_KEY`].value"
+  no_log: true
+
+- name: Search AWS DOMAIN
+  ansible.builtin.set_fact:
+    aws_domain_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+  vars:
+    _query: "[?name ==`sandboxzone`].value"
+  no_log: true
+
+- name: Search AWS WEB CONSOLE
+  ansible.builtin.set_fact:
+    aws_web_console_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+  vars:
+    _query: "[?name ==`Web_Console_Access`].value"
+  no_log: true
+
+- name: Search AWS WEB CONSOLE CREDENTIALS
+  ansible.builtin.set_fact:
+    aws_web_console_cred_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+  vars:
+    _query: "[?name ==`Web_Console_Credentials`].value"
+  no_log: true
+
+- name: Search AWS EC2 REGION
+  ansible.builtin.set_fact:
+    aws_ec2_region_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+  vars:
+    _query: "[?name ==`ec2region`].value"
+  no_log: true
+
+- name: Search GUID
+  ansible.builtin.set_fact:
+    guid_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+  vars:
+    _query: "[?name ==`GUID`].value"
+  no_log: true
+
+- name: Clean up Variables
+  ansible.builtin.set_fact:
+    aws_access_key: "{{ aws_access_key_temp[0] | trim }}"
+    aws_access_secret: "{{ aws_access_secret_temp[0] | trim }}"
+    aws_domain: "{{ aws_domain_temp[0] | trim }}"
+    aws_web_console: "{{ aws_web_console_temp[0] | trim }}"
+    aws_web_console_cred: "{{ aws_web_console_cred_temp[0] | trim  }}"
+    aws_ec2_region: "{{ aws_ec2_region_temp[0] | trim }}"
+    guid: "{{ guid_temp[0] | trim }}"
+  #no_log: true
+
+- name: Display variables for troubleshooting
+  ansible.builtin.debug:
+    msg:
+    - "GUID: {{ guid }}"
+    - "AWS EC2 REGION: {{ aws_ec2_region }}"
+    - "AWS ACCESS KEY: {{ aws_access_key }}"
+    - "AWS SECRET KEY: {{ aws_access_secret }}"
+    - "AWS DOMAIN: {{ aws_domain }}"
+    - "AWS WEB CONSOLE: {{ aws_web_console }}"
+    - "AWS WEB CONSOLE CREDENTIALS: {{ aws_web_console_cred }}"
+    # The following breaks if the password has a '/'
+    - "AWS WEB CONSOLE USERNAME: {{ aws_web_console_cred.split('/')[0] | trim }}"
+    - "AWS WEB CONSOLE PASSWORD: {{ aws_web_console_cred.split('/')[1] | trim }}"

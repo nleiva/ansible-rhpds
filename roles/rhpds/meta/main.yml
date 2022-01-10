@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Raed Soliman, Nicolas Leiva
+  description: Create AWS Sandbox enviroments in RHPDS
+  company: Red Hat
+  license: BSD 3
+
+  min_ansible_version: 2.9
+
+  platforms:
+  - name: EL
+    versions:
+      - 6
+      - 7
+      - 8
+
+  galaxy_tags:
+    - redhat

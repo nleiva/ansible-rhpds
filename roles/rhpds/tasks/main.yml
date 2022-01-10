@@ -1,0 +1,72 @@
+---
+  - name: Get all running services
+    ansible.builtin.uri:
+      url: "{{ cfme_url }}/api/services/"
+      user: "{{ cfme_username }}"
+      password: "{{ cfme_password }}"
+      method: GET
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+    register: running_services
+
+  - name: set fact for checking if an AWS sandbox already exists
+    set_fact:
+      aws_sandbox_exists: False
+
+  - name: Check if a Sandbox env already exists
+    include_tasks: check_existing_services.yml
+    loop: "{{ running_services.json.resources }}"
+    when: not allow_duplicate_sandboxes
+
+  - name: Does the AWS Sandbox Env exists already?
+    debug:
+      msg: "AWS Sandbox Env exists: {{ aws_sandbox_exists }}"
+
+  - name: If the Sandbox already exists, abort
+    fail:
+      msg: AWS Sandbox environment already exists
+    when: aws_sandbox_exists
+
+  - name: Request a new sandbox
+    ansible.builtin.uri:
+      url: "{{ cfme_url }}/api/service_catalogs/{{ service_catalog_id }}/service_templates"
+      user: "{{ cfme_username }}"
+      password: "{{ cfme_password }}"
+      method: POST
+      body: "{{ lookup('template','new_env.json.j2') }}"
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+    register: request_object
+    when: not aws_sandbox_exists
+
+  - name: check request until it is complete
+    ansible.builtin.uri:
+      url: "{{ request_object.json.results[0].href }}"
+      user: "{{ cfme_username }}"
+      password: "{{ cfme_password }}"
+      method: GET
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+    register: request_status
+    until: request_status.json.request_state == "finished"
+    retries: 20
+    delay: 30
+
+  - name: Get all running services
+    ansible.builtin.uri:
+      url: "{{ cfme_url }}/api/services/"
+      user: "{{ cfme_username }}"
+      password: "{{ cfme_password }}"
+      method: GET
+      force_basic_auth: yes
+      status_code: 200
+      body_format: json
+    register: running_services
+
+  - name: set credential stats for new sandbox
+    include_tasks: check_existing_services.yml
+    loop: "{{ running_services.json.resources }}"
+    when: not allow_duplicate_sandboxes
