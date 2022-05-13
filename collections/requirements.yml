@@ -5,4 +5,4 @@ collections:
 
   - name: ansible.controller
     version: 4.1.0
-    source: https://cloud.redhat.com/api/automation-hub/
+    source: https://console.redhat.com/api/automation-hub/
