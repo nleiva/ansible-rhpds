@@ -13,19 +13,19 @@
         file: "{{ playbook_dir }}/vars/base.yml"
 
   roles:
-      - { role: check_vars }
-      - { role: rhpds, when: cfme_url is defined }
+    - { role: check_vars }
+    - { role: rhpds, when: cfme_url is defined }
 
   tasks:
-  - name: Add AWS RHPDS Credential to controller
-    controller_credential:
-      name: "{{ credential_name }}"
-      description: RHPDS AWS Token
-      organization: "{{ controller_org }}"
-      credential_type: Amazon Web Services
-      inputs:
-        username: "{{ aws_access_key | default('access') }}"
-        password: "{{ aws_access_secret | default('secret') }}"
-      controller_oauthtoken: "{{ controller_oauthtoken | default(omit, true) }}"
-      controller_host: "{{ controller_hostname }}"
-    when: update_credentials
+    - name: Add AWS RHPDS Credential to controller
+      ansible.controller.credential:
+        name: "{{ credential_name }}"
+        description: RHPDS AWS Token
+        organization: "{{ controller_org }}"
+        credential_type: Amazon Web Services
+        inputs:
+          username: "{{ aws_access_key | default('access') }}"
+          password: "{{ aws_access_secret | default('secret') }}"
+        controller_oauthtoken: "{{ controller_oauthtoken | default(omit, true) }}"
+        controller_host: "{{ controller_hostname }}"
+      when: update_credentials

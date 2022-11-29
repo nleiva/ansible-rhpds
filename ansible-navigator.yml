@@ -2,8 +2,6 @@
 ansible-navigator:
   ansible:
     config: ansible.cfg
-    inventories:
-    - ./hosts
 
   editor:
     command: code -g {filename}:{line_number}
@@ -15,7 +13,6 @@ ansible-navigator:
   execution-environment:
     container-engine: podman
     enabled: true
-    pull-policy: missing
     image: quay.io/nleiva/ee-controller-image
     environment-variables:
       pass:
@@ -23,6 +20,6 @@ ansible-navigator:
         - CONTROLLER_OAUTHTOKEN
 
   playbook-artifact:
-    enable: False
+    enable: false
 
   mode: stdout
