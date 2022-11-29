@@ -1,8 +1,10 @@
 collections:
   - name: redhat_cop.controller_configuration
     version: 2.1.9
-    source: https://galaxy.ansible.com
 
   - name: ansible.controller
     version: 4.3.0
     source: https://cloud.redhat.com/api/automation-hub/
+
+  - name: community.general
+    version: 6.0.1
