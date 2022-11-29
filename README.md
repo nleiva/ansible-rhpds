@@ -1,4 +1,5 @@
 # RHPDS Sandbox request
+[![Ansible Lint](https://github.com/nleiva/ansible-rhpds/actions/workflows/ansible-lint.yml/badge.svg)](https://github.com/nleiva/ansible-rhpds/actions/workflows/ansible-lint.yml)
 
 Playbooks to request a Red Hat Product Demo System (RHPDS) Sandbox and update credentials on Ansible Controller.
 
