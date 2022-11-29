@@ -33,49 +33,49 @@
 
 - name: Search AWS ACCESS KEY
   ansible.builtin.set_fact:
-    aws_access_key_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+    aws_access_key_temp: "{{ full_attributes.json.custom_attributes | community.general.json_query(_query) }}"
   vars:
     _query: "[?name ==`AWS_ACCESS_KEY_ID`].value"
   no_log: true
 
 - name: Search AWS SECRET KEY
   ansible.builtin.set_fact:
-    aws_access_secret_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+    aws_access_secret_temp: "{{ full_attributes.json.custom_attributes | community.general.json_query(_query) }}"
   vars:
     _query: "[?name ==`AWS_SECRET_ACCESS_KEY`].value"
   no_log: true
 
 - name: Search AWS DOMAIN
   ansible.builtin.set_fact:
-    aws_domain_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+    aws_domain_temp: "{{ full_attributes.json.custom_attributes | community.general.json_query(_query) }}"
   vars:
     _query: "[?name ==`sandboxzone`].value"
   no_log: true
 
 - name: Search AWS WEB CONSOLE
   ansible.builtin.set_fact:
-    aws_web_console_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+    aws_web_console_temp: "{{ full_attributes.json.custom_attributes | community.general.json_query(_query) }}"
   vars:
     _query: "[?name ==`Web_Console_Access`].value"
   no_log: true
 
 - name: Search AWS WEB CONSOLE CREDENTIALS
   ansible.builtin.set_fact:
-    aws_web_console_cred_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+    aws_web_console_cred_temp: "{{ full_attributes.json.custom_attributes | community.general.json_query(_query) }}"
   vars:
     _query: "[?name ==`Web_Console_Credentials`].value"
   no_log: true
 
 - name: Search AWS EC2 REGION
   ansible.builtin.set_fact:
-    aws_ec2_region_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+    aws_ec2_region_temp: "{{ full_attributes.json.custom_attributes | community.general.json_query(_query) }}"
   vars:
     _query: "[?name ==`ec2region`].value"
   no_log: true
 
 - name: Search GUID
   ansible.builtin.set_fact:
-    guid_temp: "{{ full_attributes.json.custom_attributes | json_query(_query) }}"
+    guid_temp: "{{ full_attributes.json.custom_attributes | community.general.json_query(_query) }}"
   vars:
     _query: "[?name ==`GUID`].value"
   no_log: true
